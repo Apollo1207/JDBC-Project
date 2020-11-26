@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/fedyniak_illya_db</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.username">Apollo</property>
+        <property name="connection.password">1207</property>
+        <mapping class="org.example.project.jdbc.model.implementation.EmergencyDetails"/>
+        <mapping class="org.example.project.jdbc.model.implementation.Description"/>
+        <mapping class="org.example.project.jdbc.model.implementation.PersonInformationReport"/>
+        <mapping class="org.example.project.jdbc.model.implementation.CrewAccepted"/>
+        <mapping class="org.example.project.jdbc.model.implementation.ReceivedCall"/>
+    </session-factory>
+</hibernate-configuration>

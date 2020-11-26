@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionManager {
-    private static final String url = "jdbc:mysql://localhost:3306/fedyniak_illya_db?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
-    private static final String user = "root";
-    private static final String password = "1207";
+    private static final String URL = "jdbc:mysql://localhost:3306/fedyniak_illya_db?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String USER = "root";
+    private static final String PASSWORD = "1207";
 
     private static Connection connection = null;
 
@@ -17,7 +17,7 @@ public class ConnectionManager {
     public static Connection getConnection() {
         if (connection == null) {
             try {
-                connection = DriverManager.getConnection(url, user, password);
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
             } catch (SQLException e) {
                 System.out.println("SQLException: " + e.getMessage());
                 System.out.println("SQLState: " + e.getSQLState());
