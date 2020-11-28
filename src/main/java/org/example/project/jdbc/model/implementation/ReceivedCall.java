@@ -2,26 +2,34 @@ package org.example.project.jdbc.model.implementation;
 
 import org.example.project.jdbc.model.GeneralModelInterface;
 
+import javax.persistence.*;
+import java.util.Objects;
+
+@Entity
+@Table(name = "received_call", schema = "fedyniak_illya_db", catalog = "")
 public class ReceivedCall implements GeneralModelInterface {
     private Integer id;
-    private Integer descriptionId;
+    private Description descriptionByDescriptionId;
     private String address;
-    private Integer personInformationReportId;
-    private String datetime;
+    private PersonInformationReport personInformationReportByPersonInformationReportId;
+    private String dateTime;
+    private CrewAccepted crewAcceptedByCrewAcceptedId;
 
-    public ReceivedCall(Integer id, Integer descriptionId, String address, Integer personInformationReportId, String datetime) {
 
-//        java.util.Date dt = new java.util.Date();
-//        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        this.id = id;
-        this.descriptionId = descriptionId;
-        this.address = address;
-        this.personInformationReportId = personInformationReportId;
-        this.datetime = datetime;
+    public ReceivedCall() {
     }
 
-    @Override
+    public ReceivedCall(final Integer id, final Description descriptionByDescriptionId, final String address, final PersonInformationReport personInformationReportByPersonInformationReportId, final String dateTime, final CrewAccepted crewAcceptedByCrewAcceptedId) {
+        this.id = id;
+        this.descriptionByDescriptionId = descriptionByDescriptionId;
+        this.address = address;
+        this.personInformationReportByPersonInformationReportId = personInformationReportByPersonInformationReportId;
+        this.dateTime = dateTime;
+        this.crewAcceptedByCrewAcceptedId = crewAcceptedByCrewAcceptedId;
+    }
+
+    @Id
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -30,14 +38,8 @@ public class ReceivedCall implements GeneralModelInterface {
         this.id = id;
     }
 
-    public Integer getDescriptionId() {
-        return descriptionId;
-    }
-
-    public void setDescriptionId(Integer descriptionId) {
-        this.descriptionId = descriptionId;
-    }
-
+    @Basic
+    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -46,31 +48,64 @@ public class ReceivedCall implements GeneralModelInterface {
         this.address = address;
     }
 
-    public Integer getPersonInformationReportId() {
-        return personInformationReportId;
+    @Basic
+    @Column(name = "datetime")
+    public String getDateTime() {
+        return dateTime;
     }
 
-    public void setPersonInformationReportId(Integer personInformationReportId) {
-        this.personInformationReportId = personInformationReportId;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public String getDatetime() {
-        return datetime;
+    @ManyToOne
+    @JoinColumn(name = "description_id", referencedColumnName = "id", nullable = false)
+    public Description getDescriptionByDescriptionId() {
+        return descriptionByDescriptionId;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public void setDescriptionByDescriptionId(Description descriptionByDescriptionId) {
+        this.descriptionByDescriptionId = descriptionByDescriptionId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "person_information_report_id", referencedColumnName = "id", nullable = false)
+    public PersonInformationReport getPersonInformationReportByPersonInformationReportId() {
+        return personInformationReportByPersonInformationReportId;
+    }
+
+    public void setPersonInformationReportByPersonInformationReportId(PersonInformationReport personInformationReportByPersonInformationReportId) {
+        this.personInformationReportByPersonInformationReportId = personInformationReportByPersonInformationReportId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "crew_accepted_id", referencedColumnName = "id", nullable = false)
+    public CrewAccepted getCrewAcceptedByCrewAcceptedId() {
+        return crewAcceptedByCrewAcceptedId;
+    }
+
+    public void setCrewAcceptedByCrewAcceptedId(CrewAccepted crewAcceptedByCrewAcceptedId) {
+        this.crewAcceptedByCrewAcceptedId = crewAcceptedByCrewAcceptedId;
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReceivedCall that = (ReceivedCall) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(dateTime, that.dateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, address, dateTime);
+    }
+
+
+    @Override
     public String toString() {
-        return "ReceivedCall{" +
-                "id=" + id +
-                ", descriptionId=" + descriptionId +
-                ", address='" + address + '\'' +
-                ", personInformationReportId=" + personInformationReportId +
-                ", datetime='" + datetime + '\'' +
-                '}';
+        return "Received Call [id=" + id + ", descriptionByDescriptionId=" + descriptionByDescriptionId + ", address=" + address + ", personInformationReportByPersonInformationReportId=" + personInformationReportByPersonInformationReportId + ", dateTime=" + dateTime + "]";
     }
 }
-

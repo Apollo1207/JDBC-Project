@@ -5,11 +5,12 @@ import org.example.project.jdbc.DAO.implementation.DescriptionDAO;
 import org.example.project.jdbc.model.implementation.Description;
 
 public class DescriptionService extends GeneralService<Description> {
-    public GeneralDAOInterface<Description, Integer> descriptionDAO = new DescriptionDAO();
+
+    private final GeneralDAOInterface<Description> DESCRIPTION_DAO = new DescriptionDAO();
 
     @Override
-    public GeneralDAOInterface<Description, Integer> getDAO() {
-        return descriptionDAO;
+    public GeneralDAOInterface<Description> getDAO() {
+        return DESCRIPTION_DAO;
     }
 
 }

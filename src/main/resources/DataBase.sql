@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS `fedyniak_illya_db`.`emergency_details`
 CREATE TABLE IF NOT EXISTS `fedyniak_illya_db`.`description`
 (
     `id`                   INT         NOT NULL AUTO_INCREMENT,
-    `short`                VARCHAR(20) NOT NULL,
-    `expanded`             VARCHAR(80) NULL,
+    `short_desc`                VARCHAR(20) NOT NULL,
+    `expanded_desc`             VARCHAR(80) NULL,
     `emergency_details_id` INT         NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `fk_description_emergency_details1_idx` (`emergency_details_id` ASC) VISIBLE,
@@ -118,7 +118,7 @@ VALUES ('domestic', 'parental neglect'),
        ('domestic', 'short circuit');
 
 
-INSERT INTO `fedyniak_illya_db`.`description` (`short`, `expanded`, `emergency_details_id`)
+INSERT INTO `fedyniak_illya_db`.`description` (`short_desc`, `expanded_desc`, `emergency_details_id`)
 VALUES ('domestic', '', '1'),
        ('domestic', 'collision of three cars. one of them was overturned, two were injured', '2'),
        ('domestic', 'gas explosion in a high-rise building', '3'),

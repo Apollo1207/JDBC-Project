@@ -2,6 +2,7 @@ package org.example.project.jdbc.view;
 
 import org.example.project.jdbc.controller.implementation.*;
 import org.example.project.jdbc.model.implementation.*;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -10,6 +11,7 @@ import java.util.Scanner;
 
 
 public class MainView {
+    private static final Scanner INPUT = new Scanner(System.in);
 
     private final CrewAcceptedController crewAcceptedController = new CrewAcceptedController();
     private final EmergencyDetailsController emergencyDetailsController = new EmergencyDetailsController();
@@ -19,9 +21,8 @@ public class MainView {
 
     private final Map<String, String> menu;
     private final Map<String, Printable> methodsMenu;
-    private static final Scanner INPUT = new Scanner(System.in, "UTF-8");
 
-    public MainView() {
+    public MainView(Session session) {
         menu = new LinkedHashMap<>();
         methodsMenu = new LinkedHashMap<>();
 
@@ -56,54 +57,53 @@ public class MainView {
         menu.put("95", "95 - Update receivedCall by ID");
 
 
-        methodsMenu.put("41", this::getAllCrewAccepteds);
-        methodsMenu.put("42", this::getCrewAcceptedById);
-        methodsMenu.put("43", this::createCrewAccepted);
-        methodsMenu.put("44", this::deleteCrewAcceptedById);
-        methodsMenu.put("45", this::updateCrewAcceptedById);
+        methodsMenu.put("41", () -> getAllCrewAccepteds(session));
+        methodsMenu.put("42", () -> getCrewAcceptedById(session));
+        methodsMenu.put("43", () -> createCrewAccepted(session));
+        methodsMenu.put("44", () -> deleteCrewAcceptedById(session));
+        methodsMenu.put("45", () -> updateCrewAcceptedById(session));
 
-        methodsMenu.put("61", this::getAllEmergencyDetailss);
-        methodsMenu.put("62", this::getEmergencyDetailsById);
-        methodsMenu.put("63", this::createEmergencyDetails);
-        methodsMenu.put("64", this::deleteEmergencyDetailsById);
-        methodsMenu.put("65", this::updateEmergencyDetailsById);
+        methodsMenu.put("61", () -> getAllEmergencyDetailss(session));
+        methodsMenu.put("62", () -> getEmergencyDetailsById(session));
+        methodsMenu.put("63", () -> createEmergencyDetails(session));
+        methodsMenu.put("64", () -> deleteEmergencyDetailsById(session));
+        methodsMenu.put("65", () -> updateEmergencyDetailsById(session));
 
-        methodsMenu.put("71", this::getAllDescriptions);
-        methodsMenu.put("72", this::getDescriptionById);
-        methodsMenu.put("73", this::createDescription);
-        methodsMenu.put("74", this::deleteDescriptionById);
-        methodsMenu.put("75", this::updateDescriptionById);
+        methodsMenu.put("71", () -> getAllDescriptions(session));
+        methodsMenu.put("72", () -> getDescriptionById(session));
+        methodsMenu.put("73", () -> createDescription(session));
+        methodsMenu.put("74", () -> deleteDescriptionById(session));
+        methodsMenu.put("75", () -> updateDescriptionById(session));
 
-        methodsMenu.put("81", this::getAllPersonInformationReports);
-        methodsMenu.put("82", this::getPersonInformationReportById);
-        methodsMenu.put("83", this::createPersonInformationReport);
-        methodsMenu.put("84", this::deletePersonInformationReportById);
-        methodsMenu.put("85", this::updatePersonInformationReportById);
+        methodsMenu.put("81", () -> getAllPersonInformationReports(session));
+        methodsMenu.put("82", () -> getPersonInformationReportById(session));
+        methodsMenu.put("83", () -> createPersonInformationReport(session));
+        methodsMenu.put("84", () -> deletePersonInformationReportById(session));
+        methodsMenu.put("85", () -> updatePersonInformationReportById(session));
 
-        methodsMenu.put("91", this::getAllReceivedCalls);
-        methodsMenu.put("92", this::getReceivedCallById);
-        methodsMenu.put("93", this::createReceivedCall);
-        methodsMenu.put("94", this::deleteReceivedCallById);
-        methodsMenu.put("95", this::updateReceivedCallById);
+        methodsMenu.put("91", () -> getAllReceivedCalls(session));
+        methodsMenu.put("92", () -> getReceivedCallById(session));
+        methodsMenu.put("93", () -> createReceivedCall(session));
+        methodsMenu.put("94", () -> deleteReceivedCallById(session));
+        methodsMenu.put("95", () -> updateReceivedCallById(session));
     }
 
 
-    private void getAllCrewAccepteds() throws SQLException {
+    private void getAllCrewAccepteds(Session session) throws SQLException {
         System.out.println("\nTable: CrewAccepted");
-        crewAcceptedController.getAll();
+        crewAcceptedController.getAll(session);
     }
 
-    private void getCrewAcceptedById() throws SQLException {
+    private void getCrewAcceptedById(Session session) throws SQLException {
         System.out.println("Enter ID for CrewAccepted: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        crewAcceptedController.getById(id);
+        crewAcceptedController.getById(id, session);
     }
 
-    private void createCrewAccepted() throws SQLException {
+    private void createCrewAccepted(Session session) throws SQLException {
         System.out.println("Enter new CrewAccepted number: ");
-        int number = INPUT.nextInt();
-        INPUT.nextLine();
+        String number = INPUT.nextLine();
         System.out.println("Enter new CrewAccepted number of car: ");
         String numberOfCar = INPUT.nextLine();
         System.out.println("Enter new CrewAccepted type of car: ");
@@ -114,26 +114,25 @@ public class MainView {
         String arriveTime = INPUT.nextLine();
 
         CrewAccepted entity = new CrewAccepted(0, number, numberOfCar, typeOfCar, depatureTime, arriveTime);
-        crewAcceptedController.create(entity);
+        crewAcceptedController.create(entity, session);
     }
 
-    private void deleteCrewAcceptedById() throws SQLException {
+    private void deleteCrewAcceptedById(Session session) throws SQLException {
         System.out.println("Enter ID to delete CrewAccepted: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        crewAcceptedController.delete(id);
+        crewAcceptedController.delete(id, session);
     }
 
-    private void updateCrewAcceptedById() throws SQLException {
+    private void updateCrewAcceptedById(Session session) throws SQLException {
         System.out.println("Enter CrewAccepted id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
 
-        CrewAccepted oldCrewAccepted = crewAcceptedController.getService().getById(id);
+        CrewAccepted oldCrewAccepted = crewAcceptedController.getService().getById(id, session);
 
         System.out.println("Enter new CrewAccepted number: ");
-        int number = INPUT.nextInt();
-        INPUT.nextLine();
+        String number = INPUT.nextLine();
         System.out.println("Enter new CrewAccepted number of car: ");
         String numberOfCar = INPUT.nextLine();
         System.out.println("Enter new CrewAccepted type of car: ");
@@ -143,58 +142,58 @@ public class MainView {
         System.out.println("Enter new CrewAccepted arrive time: ");
         String arriveTime = INPUT.nextLine();
 
-        Integer newNumber = number;
+        String newNumber = number;
         String newNumberOfCar = numberOfCar;
         String newTypeOfCar = typeOfCar;
         String newDepatureTime = depatureTime;
         String newArriveTime = arriveTime;
 
 
-        if (number < 0) newNumber = oldCrewAccepted.getNumber();
+        if (number.equals("")) newNumber = oldCrewAccepted.getNumber();
         if (numberOfCar.equals("")) newNumberOfCar = oldCrewAccepted.getNumberOfCar();
         if (typeOfCar.equals("")) newTypeOfCar = oldCrewAccepted.getTypeOfCar();
         if (depatureTime.equals("")) newDepatureTime = oldCrewAccepted.getDepatureTime();
         if (arriveTime.equals("")) newArriveTime = oldCrewAccepted.getArriveTime();
 
         CrewAccepted entity = new CrewAccepted(id, newNumber, newNumberOfCar, newTypeOfCar, newDepatureTime, newArriveTime);
-        crewAcceptedController.update(entity);
+        crewAcceptedController.update(entity, session);
     }
 
 
-    private void getAllEmergencyDetailss() throws SQLException {
+    private void getAllEmergencyDetailss(Session session) throws SQLException {
         System.out.println("\nTable: EmergencyDetails");
-        emergencyDetailsController.getAll();
+        emergencyDetailsController.getAll(session);
     }
 
-    private void getEmergencyDetailsById() throws SQLException {
+    private void getEmergencyDetailsById(Session session) throws SQLException {
         System.out.println("Enter ID for EmergencyDetails: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        emergencyDetailsController.getById(id);
+        emergencyDetailsController.getById(id, session);
     }
 
-    private void createEmergencyDetails() throws SQLException {
+    private void createEmergencyDetails(Session session) throws SQLException {
         System.out.println("Enter new EmergencyDetails type: ");
         String type = INPUT.nextLine();
         System.out.println("Enter new EmergencyDetails cause: ");
         String cause = INPUT.nextLine();
 
         EmergencyDetails entity = new EmergencyDetails(0, type, cause);
-        emergencyDetailsController.create(entity);
+        emergencyDetailsController.create(entity, session);
     }
 
-    private void deleteEmergencyDetailsById() throws SQLException {
+    private void deleteEmergencyDetailsById(Session session) throws SQLException {
         System.out.println("Enter ID to delete EmergencyDetails: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        emergencyDetailsController.delete(id);
+        emergencyDetailsController.delete(id, session);
     }
 
-    private void updateEmergencyDetailsById() throws SQLException {
+    private void updateEmergencyDetailsById(Session session) throws SQLException {
         System.out.println("Enter EmergencyDetails id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        EmergencyDetails oldEmergencyDetails = emergencyDetailsController.getService().getById(id);
+        EmergencyDetails oldEmergencyDetails = emergencyDetailsController.getService().getById(id, session);
 
 
         System.out.println("Enter new EmergencyDetails type: ");
@@ -211,84 +210,87 @@ public class MainView {
 
 
         EmergencyDetails entity = new EmergencyDetails(id, newType, newCause);
-        emergencyDetailsController.update(entity);
+        emergencyDetailsController.update(entity, session);
     }
 
-    private void getAllDescriptions() throws SQLException {
+    private void getAllDescriptions(Session session) throws SQLException {
         System.out.println("\nTable: Description");
-        descriptionController.getAll();
+        descriptionController.getAll(session);
     }
 
-    private void getDescriptionById() throws SQLException {
+    private void getDescriptionById(Session session) throws SQLException {
         System.out.println("Enter ID for Description: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        descriptionController.getById(id);
+        descriptionController.getById(id, session);
     }
 
-    private void createDescription() throws SQLException {
+    private void createDescription(Session session) throws SQLException {
         System.out.println("Enter new Description short description: ");
-        String shortDescription = INPUT.nextLine();
+        String shortDesc = INPUT.nextLine();
         System.out.println("Enter new Description expanded description: ");
-        String expandedDescription = INPUT.nextLine();
+        String expandedDesc = INPUT.nextLine();
         System.out.println("Enter new Description emergency details id: ");
         int emergencyDetailsId = INPUT.nextInt();
         INPUT.nextLine();
-        Description entity = new Description(0, shortDescription, expandedDescription, emergencyDetailsId);
-        descriptionController.create(entity);
+
+        EmergencyDetails emergencyDetails = emergencyDetailsController.getService().getById(emergencyDetailsId, session);
+        Description entity = new Description(0, shortDesc, expandedDesc, emergencyDetails);
+        descriptionController.create(entity, session);
     }
 
-    private void deleteDescriptionById() throws SQLException {
+    private void deleteDescriptionById(Session session) throws SQLException {
         System.out.println("Enter ID to delete Description: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        descriptionController.delete(id);
+        descriptionController.delete(id, session);
     }
 
-    private void updateDescriptionById() throws SQLException {
+    private void updateDescriptionById(Session session) throws SQLException {
         System.out.println("Enter Description id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
 
-        Description oldDescription = descriptionController.getService().getById(id);
+        Description oldDescription = descriptionController.getService().getById(id, session);
 
 
         System.out.println("Enter new Description short description: ");
-        String shortDescription = INPUT.nextLine();
+        String shortDesc = INPUT.nextLine();
         System.out.println("Enter new Description expanded description: ");
-        String expandedDescription = INPUT.nextLine();
+        String expandedDesc = INPUT.nextLine();
         System.out.println("Enter new Description emergency details id: ");
         int emergencyDetailsId = INPUT.nextInt();
         INPUT.nextLine();
 
-        String newShortDescription = shortDescription;
-        String newExpandedDescription = expandedDescription;
-        Integer newEmergencyDetailsId = emergencyDetailsId;
+        String newShortDesc = shortDesc;
+        String newExpandedDesc = expandedDesc;
+        EmergencyDetails newEmergencyDetailsId = emergencyDetailsController.getService().getById(emergencyDetailsId, session);
 
 
-        if (shortDescription.equals("")) newShortDescription = oldDescription.getShortDescription();
-        if (expandedDescription.equals("")) newExpandedDescription = oldDescription.getExpandedDescription();
-        if (emergencyDetailsId < 0) newEmergencyDetailsId = oldDescription.getEmergencyDetailsId();
+        if (shortDesc.equals("")) newShortDesc = oldDescription.getShortDesc();
+        if (expandedDesc.equals("")) newExpandedDesc = oldDescription.getExpandedDesc();
 
-
-        Description entity = new Description(id, newShortDescription, newExpandedDescription, newEmergencyDetailsId);
-        descriptionController.update(entity);
+        Description entity = new Description();
+        entity.setShortDesc(newShortDesc);
+        entity.setExpandedDesc(newExpandedDesc);
+        entity.setEmergencyDetailsByEmergencyDetailsId(newEmergencyDetailsId);
+        descriptionController.update(entity, session);
     }
 
 
-    private void getAllPersonInformationReports() throws SQLException {
+    private void getAllPersonInformationReports(Session session) throws SQLException {
         System.out.println("\nTable: PersonInformationReport");
-        personInformationReportController.getAll();
+        personInformationReportController.getAll(session);
     }
 
-    private void getPersonInformationReportById() throws SQLException {
+    private void getPersonInformationReportById(Session session) throws SQLException {
         System.out.println("Enter ID for PersonInformationReport: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        personInformationReportController.getById(id);
+        personInformationReportController.getById(id, session);
     }
 
-    private void createPersonInformationReport() throws SQLException {
+    private void createPersonInformationReport(Session session) throws SQLException {
 
         System.out.println("Enter new PersonInformationReport name: ");
         String name = INPUT.nextLine();
@@ -299,21 +301,21 @@ public class MainView {
 
 
         PersonInformationReport entity = new PersonInformationReport(0, name, lastName, phoneNumber);
-        personInformationReportController.create(entity);
+        personInformationReportController.create(entity, session);
     }
 
-    private void deletePersonInformationReportById() throws SQLException {
+    private void deletePersonInformationReportById(Session session) throws SQLException {
         System.out.println("Enter ID to delete PersonInformationReport: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        personInformationReportController.delete(id);
+        personInformationReportController.delete(id, session);
     }
 
-    private void updatePersonInformationReportById() throws SQLException {
+    private void updatePersonInformationReportById(Session session) throws SQLException {
         System.out.println("Enter PersonInformationReport id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        PersonInformationReport oldPersonInformationReport = personInformationReportController.getService().getById(id);
+        PersonInformationReport oldPersonInformationReport = personInformationReportController.getService().getById(id, session);
         System.out.println("Enter new PersonInformationReport name: ");
         String name = INPUT.nextLine();
         System.out.println("Enter new PersonInformationReport last name: ");
@@ -330,25 +332,24 @@ public class MainView {
         if (lastName.equals("")) newLastName = oldPersonInformationReport.getLastName();
         if (phoneNumber.equals("")) newPhoneNumber = oldPersonInformationReport.getPhoneNumber();
 
-
         PersonInformationReport entity = new PersonInformationReport(id, newName, newLastName, newPhoneNumber);
-        personInformationReportController.update(entity);
+        personInformationReportController.update(entity, session);
     }
 
 
-    private void getAllReceivedCalls() throws SQLException {
+    private void getAllReceivedCalls(Session session) throws SQLException {
         System.out.println("\nTable: ReceivedCall");
-        receivedCallController.getAll();
+        receivedCallController.getAll(session);
     }
 
-    private void getReceivedCallById() throws SQLException {
+    private void getReceivedCallById(Session session) throws SQLException {
         System.out.println("Enter ID for ReceivedCall: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        receivedCallController.getById(id);
+        receivedCallController.getById(id, session);
     }
 
-    private void createReceivedCall() throws SQLException {
+    private void createReceivedCall(Session session) throws SQLException {
 
         System.out.println("Enter new ReceivedCall description id: ");
         int descriptionId = INPUT.nextInt();
@@ -360,22 +361,27 @@ public class MainView {
         INPUT.nextLine();
         System.out.println("Enter new ReceivedCall datetime: ");
         String dateTime = INPUT.nextLine();
-        ReceivedCall entity = new ReceivedCall(0, descriptionId, address, personInformationId, dateTime);
-        receivedCallController.create(entity);
+
+        Description description = descriptionController.getService().getById(descriptionId, session);
+        PersonInformationReport personInformationReport = personInformationReportController.getService().getById(personInformationId, session);
+        CrewAccepted crewAccepted = crewAcceptedController.getService().getById(descriptionId, session);
+
+        ReceivedCall entity = new ReceivedCall(0, description, address, personInformationReport, dateTime, crewAccepted);
+        receivedCallController.create(entity, session);
     }
 
-    private void deleteReceivedCallById() throws SQLException {
+    private void deleteReceivedCallById(Session session) throws SQLException {
         System.out.println("Enter ID to delete ReceivedCall: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        receivedCallController.delete(id);
+        receivedCallController.delete(id, session);
     }
 
-    private void updateReceivedCallById() throws SQLException {
+    private void updateReceivedCallById(Session session) throws SQLException {
         System.out.println("Enter ReceivedCall id to update: ");
         int id = INPUT.nextInt();
         INPUT.nextLine();
-        ReceivedCall oldReceivedCall = receivedCallController.getService().getById(id);
+        ReceivedCall oldReceivedCall = receivedCallController.getService().getById(id, session);
 
         System.out.println("Enter new ReceivedCall description id: ");
         int descriptionId = INPUT.nextInt();
@@ -387,21 +393,28 @@ public class MainView {
         INPUT.nextLine();
         System.out.println("Enter new ReceivedCall datetime: ");
         String dateTime = INPUT.nextLine();
+        System.out.println("Enter new ReceivedCall crew accepted id: ");
+        int crewAcceptedId = INPUT.nextInt();
+        INPUT.nextLine();
 
-        Integer newDescriptionId = descriptionId;
+        Description newDescriptionId = descriptionController.getService().getById(descriptionId,session);
         String newAddress = address;
-        Integer newPersonInformationId = personInformationId;
+        PersonInformationReport newPersonInformationId = personInformationReportController.getService().getById(personInformationId,session);
         String newDateTime = dateTime;
+        CrewAccepted newCrewAcceptedId = crewAcceptedController.getService().getById(crewAcceptedId,session);
 
 
-        if (descriptionId < 0) newDescriptionId = oldReceivedCall.getDescriptionId();
         if (address.equals("")) newAddress = oldReceivedCall.getAddress();
-        if (personInformationId < 0) newPersonInformationId = oldReceivedCall.getPersonInformationReportId();
-        if (newDateTime.equals("")) newDateTime = oldReceivedCall.getDatetime();
+            newPersonInformationId = oldReceivedCall.getPersonInformationReportByPersonInformationReportId();
+        if (newDateTime.equals("")) newDateTime = oldReceivedCall.getDateTime();
 
-
-        ReceivedCall entity = new ReceivedCall(id, newDescriptionId, newAddress, newPersonInformationId, newDateTime);
-        receivedCallController.update(entity);
+        ReceivedCall entity = new ReceivedCall();
+        entity.setDescriptionByDescriptionId(newDescriptionId);
+        entity.setAddress(newAddress);
+        entity.setPersonInformationReportByPersonInformationReportId(newPersonInformationId);
+        entity.setDateTime(newDateTime);
+        entity.setCrewAcceptedByCrewAcceptedId(newCrewAcceptedId);
+        receivedCallController.update(entity, session);
     }
 
     private void outputMenu() {
