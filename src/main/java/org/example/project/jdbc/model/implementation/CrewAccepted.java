@@ -3,7 +3,6 @@ package org.example.project.jdbc.model.implementation;
 import org.example.project.jdbc.model.GeneralModelInterface;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Objects;
 

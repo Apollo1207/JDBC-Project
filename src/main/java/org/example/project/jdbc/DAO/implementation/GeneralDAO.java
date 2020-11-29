@@ -40,7 +40,7 @@ public abstract class GeneralDAO<T extends GeneralModelInterface> implements Gen
     @Override
     public final void update(final T entity, final Session session) throws SQLException {
         session.beginTransaction();
-        session.update(entity);
+        session.merge(entity);
         session.getTransaction().commit();
     }
 

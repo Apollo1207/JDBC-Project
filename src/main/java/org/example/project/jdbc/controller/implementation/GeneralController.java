@@ -22,7 +22,6 @@ public abstract class GeneralController<T extends GeneralModelInterface> impleme
 
     @Override
     public final void update(final T entity, final Session session) throws SQLException {
-        System.out.println(entity);
         getService().update(entity, session);
         System.out.println("Entity has been updated now");
         System.out.println(entity);

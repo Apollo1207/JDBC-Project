@@ -106,6 +106,6 @@ public class ReceivedCall implements GeneralModelInterface {
 
     @Override
     public String toString() {
-        return "Received Call [id=" + id + ", descriptionByDescriptionId=" + descriptionByDescriptionId + ", address=" + address + ", personInformationReportByPersonInformationReportId=" + personInformationReportByPersonInformationReportId + ", dateTime=" + dateTime + "]";
+        return "Received Call [id=" + id + ", descriptionByDescriptionId=" + descriptionByDescriptionId + ", address=" + address + ", personInformationReportByPersonInformationReportId=" + personInformationReportByPersonInformationReportId + ", dateTime=" + dateTime +  ", crewAcceptedByCrewAcceptedId=" + crewAcceptedByCrewAcceptedId + "]";
     }
 }

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 public class MainView {
-    private static final Scanner INPUT = new Scanner(System.in);
+    private static final Scanner INPUT = new Scanner(System.in, "UTF-8");
 
     private final CrewAcceptedController crewAcceptedController = new CrewAcceptedController();
     private final EmergencyDetailsController emergencyDetailsController = new EmergencyDetailsController();
@@ -361,10 +361,13 @@ public class MainView {
         INPUT.nextLine();
         System.out.println("Enter new ReceivedCall datetime: ");
         String dateTime = INPUT.nextLine();
+        System.out.println("Enter new ReceivedCall crew accepted id: ");
+        int crewAcceptedId = INPUT.nextInt();
+        INPUT.nextLine();
 
         Description description = descriptionController.getService().getById(descriptionId, session);
         PersonInformationReport personInformationReport = personInformationReportController.getService().getById(personInformationId, session);
-        CrewAccepted crewAccepted = crewAcceptedController.getService().getById(descriptionId, session);
+        CrewAccepted crewAccepted = crewAcceptedController.getService().getById(crewAcceptedId, session);
 
         ReceivedCall entity = new ReceivedCall(0, description, address, personInformationReport, dateTime, crewAccepted);
         receivedCallController.create(entity, session);
@@ -397,23 +400,17 @@ public class MainView {
         int crewAcceptedId = INPUT.nextInt();
         INPUT.nextLine();
 
-        Description newDescriptionId = descriptionController.getService().getById(descriptionId,session);
+        Description newDescriptionId = descriptionController.getService().getById(descriptionId, session);
         String newAddress = address;
-        PersonInformationReport newPersonInformationId = personInformationReportController.getService().getById(personInformationId,session);
+        PersonInformationReport newPersonInformationId = personInformationReportController.getService().getById(personInformationId, session);
         String newDateTime = dateTime;
-        CrewAccepted newCrewAcceptedId = crewAcceptedController.getService().getById(crewAcceptedId,session);
+        CrewAccepted newCrewAcceptedId = crewAcceptedController.getService().getById(crewAcceptedId, session);
 
 
         if (address.equals("")) newAddress = oldReceivedCall.getAddress();
-            newPersonInformationId = oldReceivedCall.getPersonInformationReportByPersonInformationReportId();
         if (newDateTime.equals("")) newDateTime = oldReceivedCall.getDateTime();
 
-        ReceivedCall entity = new ReceivedCall();
-        entity.setDescriptionByDescriptionId(newDescriptionId);
-        entity.setAddress(newAddress);
-        entity.setPersonInformationReportByPersonInformationReportId(newPersonInformationId);
-        entity.setDateTime(newDateTime);
-        entity.setCrewAcceptedByCrewAcceptedId(newCrewAcceptedId);
+        ReceivedCall entity = new ReceivedCall(id, newDescriptionId, newAddress, newPersonInformationId, newDateTime, newCrewAcceptedId);
         receivedCallController.update(entity, session);
     }
 
