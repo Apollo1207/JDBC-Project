@@ -1,0 +1,36 @@
+package org.example.project.jdbc;
+
+import org.example.project.jdbc.view.MainView;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+
+public abstract class Main {
+    private static final SessionFactory OUR_SESSION_FACTORY;
+
+    static {
+        try {
+            Configuration configuration = new Configuration();
+            configuration.configure();
+
+            OUR_SESSION_FACTORY = configuration.buildSessionFactory();
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public static Session getSession() throws HibernateException {
+        return OUR_SESSION_FACTORY.openSession();
+    }
+
+    public static void main(final String[] args) throws Exception {
+        final Session session = getSession();
+        try {
+            new MainView(session).show();
+        } finally {
+            session.close();
+        }
+    }
+}

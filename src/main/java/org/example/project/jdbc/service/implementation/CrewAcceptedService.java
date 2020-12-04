@@ -6,10 +6,10 @@ import org.example.project.jdbc.model.implementation.CrewAccepted;
 
 public class CrewAcceptedService extends GeneralService<CrewAccepted> {
 
-    public GeneralDAOInterface<CrewAccepted, Integer> crewAcceptedDAO = new CrewAcceptedDAO();
+    private final GeneralDAOInterface<CrewAccepted> CREW_ACCEPTED_DAO = new CrewAcceptedDAO();
 
     @Override
-    public GeneralDAOInterface<CrewAccepted, Integer> getDAO() {
-        return crewAcceptedDAO;
+    public GeneralDAOInterface<CrewAccepted> getDAO() {
+        return CREW_ACCEPTED_DAO;
     }
 }

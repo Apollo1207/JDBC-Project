@@ -2,6 +2,7 @@ package org.example.project.jdbc.service.implementation;
 
 import org.example.project.jdbc.DAO.GeneralDAOInterface;
 import org.example.project.jdbc.service.GeneralServiceInterface;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -9,31 +10,31 @@ import java.util.List;
 public abstract class GeneralService<T> implements GeneralServiceInterface<T> {
 
     @Override
-    public abstract GeneralDAOInterface<T, Integer> getDAO();
+    public abstract GeneralDAOInterface<T> getDAO();
 
     @Override
-    public List<T> getAll() throws SQLException {
-        return getDAO().getAll();
+    public List<T> getAll(Session session) throws SQLException {
+        return getDAO().getAll(session);
     }
 
     @Override
-    public T getById(Integer id) throws SQLException {
-        return getDAO().getById(id);
+    public T getById(Integer id, Session session) throws SQLException {
+        return (T) getDAO().getById(id, session);
     }
 
     @Override
-    public int create(T entity) throws SQLException {
-        return getDAO().create(entity);
+    public void create(T entity, Session session) throws SQLException {
+         getDAO().create(entity, session);
     }
 
     @Override
-    public int update(T entity) throws SQLException {
-        return getDAO().update(entity);
+    public void update(T entity, Session session) throws SQLException {
+         getDAO().update(entity, session);
     }
 
     @Override
-    public int delete(Integer id) throws SQLException {
-        return getDAO().delete(id);
+    public void delete(Integer id, Session session) throws SQLException {
+        getDAO().delete(id, session);
     }
 
 }

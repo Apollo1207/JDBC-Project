@@ -6,11 +6,11 @@ import org.example.project.jdbc.model.implementation.ReceivedCall;
 
 
 public class ReceivedCallService extends GeneralService<ReceivedCall> {
-    public GeneralDAOInterface<ReceivedCall, Integer> receivedCallDAO = new ReceivedCallDAO();
+    private final GeneralDAOInterface<ReceivedCall> RECEIVED_CALL_DAO = new ReceivedCallDAO();
 
     @Override
-    public GeneralDAOInterface<ReceivedCall, Integer> getDAO() {
-        return receivedCallDAO;
+    public GeneralDAOInterface<ReceivedCall> getDAO() {
+        return RECEIVED_CALL_DAO;
     }
 
 }

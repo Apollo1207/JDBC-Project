@@ -5,11 +5,11 @@ import org.example.project.jdbc.DAO.implementation.PersonInformationReportDAO;
 import org.example.project.jdbc.model.implementation.PersonInformationReport;
 
 public class PersonInformationReportService extends GeneralService<PersonInformationReport> {
-    public GeneralDAOInterface<PersonInformationReport, Integer> personInformationReportDAO = new PersonInformationReportDAO();
+    private final GeneralDAOInterface<PersonInformationReport> PERSON_INFORMATION_REPORT_DAO = new PersonInformationReportDAO();
 
     @Override
-    public GeneralDAOInterface<PersonInformationReport, Integer> getDAO() {
-        return personInformationReportDAO;
+    public GeneralDAOInterface<PersonInformationReport> getDAO() {
+        return PERSON_INFORMATION_REPORT_DAO;
     }
 
 }
