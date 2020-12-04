@@ -130,7 +130,7 @@ public class CrewAccepted implements GeneralModelInterface {
 
     @Override
     public String toString() {
-        return "Crew Accepted [id=" + id + ", number=" + number + ", typeOfCar=" + typeOfCar + ", depatureTime=" + depatureTime + ", arriveTime=" + arriveTime + ", receivedCallsById=" + receivedCallsById + "]";
+        return "Crew Accepted [id=" + id + ", number=" + number + ", typeOfCar=" + typeOfCar + ", depatureTime=" + depatureTime + ", arriveTime=" + arriveTime +  "]";
     }
 
 }
